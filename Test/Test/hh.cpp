@@ -7,4 +7,5 @@ void main()
 {
 cout<<_T("hello world");
 cout<<_T("hello world");
+cout<<_T("hello world");
 }
