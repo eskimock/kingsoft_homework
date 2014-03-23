@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-
+static CString strRes;
 void print_str(const char& s)  
 {  
 	cout<<s<<endl;  
@@ -82,10 +82,10 @@ CString GetFilledStr(const CString& strA,const CString& strB)
 	}
 	else
 		if(lenA == lenB)
-	    {
+		{
 			strRes = strB;
 			strRes += _T("($)");
-	    }
+		}
 		else
 		{
 			strRes = strB.Left(lenB - lenA);
@@ -99,15 +99,15 @@ CString GetFilledStr(const CString& strA,const CString& strB)
 }
 
 
-CString String_Diff(CString& strA,CString& strB)
+/*CString*/void String_Diff(CString& strA,CString& strB)
 {
-	/*static*/ CString strRes;
+	
 	CString strTempCommon = GetMaxCommonStr(strA,strB);
 
 	if(strTempCommon == _T(""))
 	{
 		strRes += GetFilledStr(strA,strB);
-		return strRes;
+		return ;
 	}
 	else
 	{
@@ -122,16 +122,16 @@ CString String_Diff(CString& strA,CString& strB)
 		CString sB2 = strB.Right(strB.GetLength() - strTempCommon.GetLength() - strB.Find(strTempCommon));
 
 		String_Diff(sA2,sB2);
-			
+
 	}
 
-	
+
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	CString A(_T("klsajhjdf"));
-	CString B(_T("dskajf"));
+	CString A(_T("hello world!!"));
+	CString B(_T("hello world!!"));
 
 	wprintf_s(_T("%s\n"),GetFilledStr(A,B));
 
@@ -141,7 +141,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	cout<<endl;
 
-	wprintf_s(_T("%s\n"),String_Diff(A,B));
+	String_Diff(A,B);
+
+	wprintf_s(_T("%s\n"),strRes);
 	return 0;
 }
 
