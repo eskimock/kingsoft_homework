@@ -1,8 +1,10 @@
 #include "text_diff_dialog.h"
 #include "ui_text_diff_dialog.h"
+#include "qstringx.h"
 
 #include <qfile.h>
 #include <qtextstream.h>
+
 
 #include <QtGui>
 
@@ -57,6 +59,22 @@ void Text_Diff_Dialog::on_diffBtn_clicked()
     {
         QString strContentA = GetFileContent(strFileDirA);
         QString strContentB = GetFileContent(strFileDirB);
+
+        QString strOutput = QStringX::String_Diff(strContentA,strContentB);
+
+
+        QFile fileOutput( tr("output.txt") );
+        fileOutput.open (QIODevice::WriteOnly|QIODevice::Text);
+        fileOutput.close ();
+
+
+        fileOutput.open (QIODevice::WriteOnly|QIODevice::Text);
+
+        QTextStream writeFile(&fileOutput);
+
+        writeFile << strOutput;
+
+        fileOutput.close();
     }
 
 }
