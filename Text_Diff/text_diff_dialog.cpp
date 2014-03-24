@@ -24,8 +24,6 @@ Text_Diff_Dialog::~Text_Diff_Dialog()
     delete ui;
 }
 
-
-
 void Text_Diff_Dialog::on_browseBtnA_clicked()
 {
     QString strDirA = QFileDialog::getOpenFileName(this,tr("Text_Diff"), QDir::currentPath(), tr("TEXT files (*.txt);;All files(*.*)"));
@@ -60,21 +58,28 @@ void Text_Diff_Dialog::on_diffBtn_clicked()
         QString strContentA = GetFileContent(strFileDirA);
         QString strContentB = GetFileContent(strFileDirB);
 
-        QString strOutput = QStringX::String_Diff(strContentA,strContentB);
+        QStringX strOutputX;
+        QString strOutput = strOutputX.String_Diff(strContentA,strContentB);
 
+        QFile fileOutput( tr("Diff_Res.txt") );
 
-        QFile fileOutput( tr("output.txt") );
-        fileOutput.open (QIODevice::WriteOnly|QIODevice::Text);
-        fileOutput.close ();
+        //不存在则创建
+        if(!QFile::exists(tr("Diff_Res.txt")))
+        {
 
+            fileOutput.open (QIODevice::WriteOnly|QIODevice::Text);
+            fileOutput.close ();
+        }
 
-        fileOutput.open (QIODevice::WriteOnly|QIODevice::Text);
+        fileOutput.open (QIODevice::WriteOnly);
 
         QTextStream writeFile(&fileOutput);
-
         writeFile << strOutput;
 
         fileOutput.close();
+
+        QDir curDir;
+        QMessageBox::information(NULL, tr("TIP"), curDir.currentPath() + tr("/Diff_Res.txt"));
     }
 
 }

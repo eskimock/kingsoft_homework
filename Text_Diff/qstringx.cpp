@@ -3,9 +3,20 @@
 
 QStringX::QStringX()
 {
+    InitDiffRes("");
 }
 
-QString QStringX::String_Common(const QString& strA,const QString& strB)
+void QStringX::InitDiffRes (const QString &strRes)
+{
+    m_strDiffRes = strRes;
+}
+
+QString QStringX::GetDiffRes () const
+{
+    return m_strDiffRes;
+}
+
+QString QStringX::String_Common (const QString& strA,const QString& strB)
 {
     QString strTempA = strA;
     QString strTempB = strB;
@@ -29,22 +40,22 @@ QString QStringX::String_Common(const QString& strA,const QString& strB)
             {
                 if((iA == 0)||(iB == 0))
                 {
-                        vFlag[iA] = 1;
+                    vFlag[iA] = 1;
                 }
                 else
                 {
-                        vFlag[iA] = vFlag[iA - 1] + 1;
+                    vFlag[iA] = vFlag[iA - 1] + 1;
                 }
             }
             else
             {
-                 vFlag[iA] = 0;
+                vFlag[iA] = 0;
             }
 
             if(vFlag[iA] > ilenSubStr)
             {
-                    ilenSubStr = vFlag[iA];
-                    iEnd = iA;
+                ilenSubStr = vFlag[iA];
+                iEnd = iA;
             }
         }
 
@@ -61,7 +72,7 @@ QString QStringX::String_Fill(const QString& strA,const QString& strB)
 
     if((lenA == 0)&&(lenB == 0))
     {
-            return "";
+        return "";
     }
 
     if(lenA > lenB)
@@ -70,22 +81,22 @@ QString QStringX::String_Fill(const QString& strA,const QString& strB)
         strRes.append ("(-)");
         strRes += strB;
 
-        strRes = lenB == 0?strRes:strRes.append ("($)");
+        strRes = lenB == 0 ? strRes : strRes.append ("($)");
 
     }
     else
         if(lenA == lenB)
         {
-                strRes = strB;
-                strRes.append ("($)");
+            strRes = strB;
+            strRes.append ("($)");
         }
         else
         {
-                strRes = strB.left(lenB - lenA);
-                strRes.append ("(+)");
-                strRes.append ((strB.right(lenA)));
+            strRes = strB.left(lenB - lenA);
+            strRes.append ("(+)");
+            strRes.append ((strB.right(lenA)));
 
-                strRes = lenA == 0?strRes:strRes.append ("($)");
+            strRes = lenA == 0 ? strRes : strRes.append ("($)");
         }
 
     return strRes;
@@ -93,27 +104,27 @@ QString QStringX::String_Fill(const QString& strA,const QString& strB)
 
 QString QStringX::String_Diff(const QString& strA,const QString& strB)
 {
-    static QString strRes;
     QString strCommon = String_Common(strA,strB);
 
     if(strCommon == "")
     {
-        strRes += String_Fill(strA,strB);
+        m_strDiffRes += String_Fill(strA,strB);
     }
     else
     {
-            QString sA1 = strA.left(strA.indexOf (strCommon));
-            QString sB1 = strB.left(strB.indexOf (strCommon));
-            String_Diff(sA1,sB1);
+        QString sA1 = strA.left(strA.indexOf (strCommon));
+        QString sB1 = strB.left(strB.indexOf (strCommon));
 
-            strRes += strCommon;
-            strRes.append ("(=)");
+        String_Diff(sA1,sB1);
 
-            QString sA2 = strA.right(strA.length() - strCommon.length () - strA.indexOf(strCommon));
-            QString sB2 = strB.right(strB.length() - strCommon.length() - strB.indexOf(strCommon));
-            String_Diff(sA2,sB2);
+        m_strDiffRes += strCommon;
+        m_strDiffRes.append ("(=)");
 
+        QString sA2 = strA.right(strA.length() - strCommon.length() - strA.indexOf(strCommon));
+        QString sB2 = strB.right(strB.length() - strCommon.length() - strB.indexOf(strCommon));
+
+        String_Diff(sA2,sB2);
     }
 
-    return strRes;
+    return m_strDiffRes;
 }
