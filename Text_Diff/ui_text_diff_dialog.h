@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'text_diff_dialog.ui'
 **
-** Created: Sun Mar 23 19:50:20 2014
+** Created: Mon Mar 24 19:28:15 2014
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
